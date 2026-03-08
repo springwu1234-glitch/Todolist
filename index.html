@@ -1,300 +1,235 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0048)file:///C:/Users/User/Downloads/index%20(1).html -->
+<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="速記">
 <meta name="theme-color" content="#C4A882">
 <title>速記 · 待辦</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./index_files/css2" rel="stylesheet">
 <style>
   :root {
-    --bg:        #F5F0E8;
-    --bg2:       #EDE8DE;
-    --surface:   #FDFAF5;
-    --rose:      #C4927A;
-    --rose-lt:   #DDB99F;
-    --sage:      #8FA89A;
-    --sage-lt:   #B8CCC4;
-    --slate:     #8E9BB0;
-    --slate-lt:  #B8C4D4;
-    --warm:      #C4A882;
-    --warm-lt:   #D9C9AE;
-    --text:      #3D3530;
-    --text2:     #7A6E68;
-    --text3:     #A89F98;
-    --done-bg:   #EAE6E0;
-    --radius:    16px;
-    --shadow:    0 2px 16px rgba(61,53,48,.08);
-    --shadow2:   0 4px 24px rgba(61,53,48,.12);
+    --bg:       #F5F0E8;
+    --bg2:      #EDE8DE;
+    --surface:  #FDFAF5;
+    --rose:     #C4927A;
+    --rose-lt:  #DDB99F;
+    --sage:     #8FA89A;
+    --sage-lt:  #B8CCC4;
+    --slate-lt: #B8C4D4;
+    --warm-lt:  #D9C9AE;
+    --text:     #3D3530;
+    --text2:    #7A6E68;
+    --text3:    #A89F98;
+    --done-bg:  #EAE6E0;
+    --radius:   16px;
+    --shadow:   0 2px 16px rgba(61,53,48,.08);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  body {
+  html, body {
+    height: 100%;
     font-family: 'Noto Sans TC', sans-serif;
     background: var(--bg);
     color: var(--text);
-    min-height: 100dvh;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 
+  /* ── FULL HEIGHT SHELL ── */
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    height: 100dvh;
+  }
+
+  /* ── HEADER ── */
   .header {
-    position: sticky; top: 0; z-index: 10;
+    flex-shrink: 0;
     background: var(--surface);
-    padding: 20px 24px 16px;
+    padding: 20px 24px 0;
     box-shadow: 0 1px 0 rgba(61,53,48,.06);
+    z-index: 2;
   }
   .header-row {
     display: flex; align-items: flex-end; justify-content: space-between;
+    padding-bottom: 16px;
   }
   .app-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 28px; font-weight: 600;
-    color: var(--rose);
-    letter-spacing: .02em;
-    line-height: 1;
+    color: var(--rose); letter-spacing: .02em; line-height: 1;
   }
-  .app-sub {
-    font-size: 11px; color: var(--text3);
-    letter-spacing: .08em; text-transform: uppercase;
-    margin-top: 4px;
-  }
-  .date-badge {
-    font-size: 12px; color: var(--text2);
-    background: var(--bg2);
-    padding: 5px 12px; border-radius: 20px;
-    letter-spacing: .04em;
-  }
+  .app-sub { font-size: 11px; color: var(--text3); letter-spacing: .08em; text-transform: uppercase; margin-top: 4px; }
+  .date-badge { font-size: 12px; color: var(--text2); background: var(--bg2); padding: 5px 12px; border-radius: 20px; letter-spacing: .04em; }
 
-  .tabs {
-    display: flex; gap: 4px;
-    padding: 12px 24px 0;
-    background: var(--surface);
-  }
+  /* ── TABS ── */
+  .tabs { display: flex; background: var(--surface); padding: 0 24px; }
   .tab {
-    flex: 1; padding: 8px 0;
-    font-size: 13px; font-weight: 500;
-    color: var(--text3);
-    border: none; background: transparent;
-    cursor: pointer;
+    flex: 1; padding: 10px 0;
+    font-size: 13px; font-weight: 500; color: var(--text3);
+    border: none; background: transparent; cursor: pointer;
     border-bottom: 2px solid transparent;
-    transition: all .2s;
-    letter-spacing: .04em;
+    transition: all .2s; letter-spacing: .04em;
     font-family: 'Noto Sans TC', sans-serif;
   }
   .tab.active { color: var(--rose); border-bottom-color: var(--rose); }
 
-  .content { padding: 20px 20px 140px; }
+  /* ── SCROLL AREA ── */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .content { padding: 20px 20px 24px; }
 
   .section-label {
     font-size: 10px; letter-spacing: .14em;
     text-transform: uppercase; color: var(--text3);
-    margin: 8px 4px 12px;
+    margin: 4px 4px 12px;
   }
 
+  /* ── TODO ITEM ── */
   .todo-item {
     display: flex; align-items: flex-start; gap: 12px;
     background: var(--surface);
     border-radius: var(--radius);
-    padding: 14px 16px;
-    margin-bottom: 10px;
+    padding: 14px 16px; margin-bottom: 10px;
     box-shadow: var(--shadow);
-    transition: transform .15s, box-shadow .15s, opacity .3s;
     animation: slideIn .25s ease;
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
   }
   .todo-item::before {
-    content: '';
-    position: absolute; left: 0; top: 0; bottom: 0;
-    width: 3px;
-    border-radius: 0 2px 2px 0;
-    background: var(--rose-lt);
-    transition: background .2s;
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; border-radius: 0 2px 2px 0;
   }
   .todo-item:nth-child(3n+1)::before { background: var(--rose-lt); }
   .todo-item:nth-child(3n+2)::before { background: var(--sage-lt); }
   .todo-item:nth-child(3n)::before   { background: var(--slate-lt); }
+  .todo-item.completing { animation: completeOut .35s ease forwards; }
 
-  .todo-item.completing {
-    animation: completeOut .35s ease forwards;
-  }
-
-  .check-wrap {
-    flex-shrink: 0;
-    width: 22px; height: 22px; margin-top: 1px;
-    position: relative; cursor: pointer;
-  }
+  .check-wrap { flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px; position: relative; cursor: pointer; }
   .check-wrap input { position: absolute; opacity: 0; width: 0; height: 0; }
   .checkmark {
     width: 22px; height: 22px;
-    border: 2px solid var(--warm-lt);
-    border-radius: 6px;
+    border: 2px solid var(--warm-lt); border-radius: 6px;
     background: var(--bg);
     display: flex; align-items: center; justify-content: center;
     transition: all .2s;
   }
-  .check-wrap input:checked ~ .checkmark {
-    background: var(--rose);
-    border-color: var(--rose);
-  }
+  .check-wrap input:checked ~ .checkmark { background: var(--rose); border-color: var(--rose); }
   .checkmark svg { opacity: 0; transform: scale(.5); transition: all .2s; }
   .check-wrap input:checked ~ .checkmark svg { opacity: 1; transform: scale(1); }
 
-  .todo-text {
-    flex: 1;
-    font-size: 15px; line-height: 1.55;
-    color: var(--text);
-    word-break: break-word;
-  }
-  .todo-time {
-    font-size: 11px; color: var(--text3);
-    margin-top: 4px;
-  }
+  .todo-text { flex: 1; font-size: 15px; line-height: 1.55; color: var(--text); word-break: break-word; }
+  .todo-time { font-size: 11px; color: var(--text3); margin-top: 4px; }
 
   .del-btn {
-    flex-shrink: 0;
-    background: none; border: none;
-    color: var(--text3); cursor: pointer;
-    padding: 2px; opacity: 0;
-    transition: opacity .2s;
+    flex-shrink: 0; background: none; border: none;
+    color: var(--text3); cursor: pointer; padding: 4px;
+    opacity: 0; transition: opacity .2s;
   }
-  .todo-item:hover .del-btn, .todo-item:focus-within .del-btn { opacity: 1; }
+  .todo-item:hover .del-btn,
+  .todo-item:focus-within .del-btn { opacity: 1; }
 
+  /* ── DONE ITEM ── */
   .done-item {
     display: flex; align-items: flex-start; gap: 12px;
-    background: var(--done-bg);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    animation: slideIn .25s ease;
-    opacity: .75;
+    background: var(--done-bg); border-radius: var(--radius);
+    padding: 12px 16px; margin-bottom: 8px;
+    animation: slideIn .25s ease; opacity: .75;
   }
   .done-check {
     width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
-    background: var(--sage);
-    border-radius: 6px;
+    background: var(--sage); border-radius: 6px;
     display: flex; align-items: center; justify-content: center;
   }
-  .done-text {
-    flex: 1; font-size: 14px; color: var(--text2);
-    text-decoration: line-through;
-    text-decoration-color: var(--text3);
-    word-break: break-word;
-  }
+  .done-text { flex: 1; font-size: 14px; color: var(--text2); text-decoration: line-through; text-decoration-color: var(--text3); word-break: break-word; }
   .done-time { font-size: 10px; color: var(--text3); margin-top: 3px; }
 
-  .empty {
-    text-align: center;
-    padding: 60px 20px;
-  }
+  .empty { text-align: center; padding: 60px 20px; }
   .empty-icon { font-size: 44px; margin-bottom: 16px; filter: saturate(.6); }
   .empty-text { font-size: 14px; color: var(--text3); line-height: 1.7; }
 
+  .clear-btn {
+    width: 100%; padding: 10px;
+    background: none; border: 1.5px dashed var(--warm-lt);
+    border-radius: var(--radius); font-size: 13px; color: var(--text2);
+    cursor: pointer; margin-top: 12px;
+    font-family: 'Noto Sans TC', sans-serif; transition: all .2s;
+  }
+  .clear-btn:hover { background: var(--bg2); }
+
+  /* ── INPUT AREA (always visible at bottom) ── */
   .input-area {
-    position: fixed; bottom: 0; left: 0; right: 0;
+    flex-shrink: 0;
     background: var(--surface);
-    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-    box-shadow: 0 -1px 0 rgba(61,53,48,.06), 0 -8px 32px rgba(61,53,48,.06);
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -1px 0 rgba(61,53,48,.06), 0 -8px 24px rgba(61,53,48,.05);
+    z-index: 2;
   }
-  .input-row {
-    display: flex; gap: 10px; align-items: flex-end;
-  }
-  .text-input {
-    flex: 1;
-    background: var(--bg2);
-    border: 1.5px solid transparent;
-    border-radius: 14px;
-    padding: 11px 16px;
-    font-size: 15px; font-family: 'Noto Sans TC', sans-serif;
-    color: var(--text);
-    resize: none; height: 46px; max-height: 120px;
-    outline: none; transition: border-color .2s, background .2s;
-    overflow-y: hidden;
-  }
-  .text-input:focus {
-    border-color: var(--rose-lt);
-    background: var(--surface);
-  }
-  .text-input::placeholder { color: var(--text3); }
-
-  .icon-btn {
-    width: 46px; height: 46px; flex-shrink: 0;
-    border: none; border-radius: 14px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all .2s;
-    font-size: 20px;
-  }
-  .add-btn {
-    background: var(--rose);
-    color: #fff;
-    box-shadow: 0 3px 12px rgba(196,146,122,.4);
-  }
-  .add-btn:active { transform: scale(.93); }
-
-  .mic-btn {
-    background: var(--warm-lt);
-    color: var(--text);
-  }
-  .mic-btn.listening {
-    background: var(--rose);
-    color: #fff;
-    animation: pulse 1.2s ease-in-out infinite;
-  }
-  .mic-btn:active { transform: scale(.93); }
-
   .listening-bar {
     display: flex; align-items: center; gap: 8px;
-    padding: 8px 4px;
-    font-size: 12px; color: var(--rose);
-    letter-spacing: .04em;
-    height: 0; overflow: hidden; opacity: 0;
-    transition: all .25s;
+    font-size: 12px; color: var(--rose); letter-spacing: .04em;
+    max-height: 0; overflow: hidden; opacity: 0;
+    transition: max-height .25s, opacity .25s, padding .25s;
   }
-  .listening-bar.show { height: 32px; opacity: 1; }
-  .wave {
-    display: flex; align-items: center; gap: 2px;
-  }
+  .listening-bar.show { max-height: 36px; opacity: 1; padding-bottom: 8px; }
+  .wave { display: flex; align-items: center; gap: 2px; }
   .wave span {
-    display: inline-block;
-    width: 3px; height: 8px;
-    background: var(--rose);
-    border-radius: 2px;
+    display: inline-block; width: 3px; height: 8px;
+    background: var(--rose); border-radius: 2px;
     animation: wave 0.9s ease-in-out infinite;
   }
   .wave span:nth-child(2) { animation-delay: .15s; height: 14px; }
   .wave span:nth-child(3) { animation-delay: .3s;  height: 18px; }
   .wave span:nth-child(4) { animation-delay: .45s; height: 14px; }
-  .wave span:nth-child(5) { animation-delay: .6s;  height: 8px; }
+  .wave span:nth-child(5) { animation-delay: .6s;  height: 8px;  }
 
-  .clear-btn {
-    width: 100%; padding: 10px;
-    background: none; border: 1.5px dashed var(--warm-lt);
-    border-radius: var(--radius);
-    font-size: 13px; color: var(--text2);
-    cursor: pointer; margin-top: 12px;
-    font-family: 'Noto Sans TC', sans-serif;
-    transition: all .2s;
+  .input-row { display: flex; gap: 10px; align-items: flex-end; }
+  .text-input {
+    flex: 1;
+    background: var(--bg2); border: 1.5px solid transparent;
+    border-radius: 14px; padding: 11px 16px;
+    font-size: 15px; font-family: 'Noto Sans TC', sans-serif;
+    color: var(--text); resize: none;
+    height: 46px; max-height: 120px;
+    outline: none; transition: border-color .2s, background .2s;
+    overflow-y: hidden;
   }
-  .clear-btn:hover { background: var(--bg2); }
+  .text-input:focus { border-color: var(--rose-lt); background: var(--surface); }
+  .text-input::placeholder { color: var(--text3); }
 
+  .icon-btn {
+    width: 46px; height: 46px; flex-shrink: 0;
+    border: none; border-radius: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s; font-size: 20px;
+  }
+  .add-btn { background: var(--rose); color: #fff; box-shadow: 0 3px 12px rgba(196,146,122,.4); }
+  .add-btn:active { transform: scale(.93); }
+  .mic-btn { background: var(--warm-lt); color: var(--text); }
+  .mic-btn.listening { background: var(--rose); color: #fff; animation: pulse 1.2s ease-in-out infinite; }
+  .mic-btn:active { transform: scale(.93); }
+
+  /* ── TOAST ── */
   .toast {
-    position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%) translateY(12px);
-    background: var(--text);
-    color: #fff;
+    position: fixed; bottom: 90px; left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--text); color: #fff;
     padding: 9px 20px; border-radius: 20px;
     font-size: 13px; letter-spacing: .04em;
-    opacity: 0; transition: all .25s; pointer-events: none; white-space: nowrap;
-    z-index: 100;
+    opacity: 0; transition: all .25s; pointer-events: none;
+    white-space: nowrap; z-index: 100;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+  /* ── ANIMATIONS ── */
   @keyframes slideIn {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -315,36 +250,230 @@
   .panel { display: none; }
   .panel.active { display: block; }
 </style>
-</head>
+<link rel="manifest" href="blob:null/1b2d29d2-838c-46c8-ba35-2e423339647f"></head>
 <body>
+<div id="app">
 
-<div class="header">
-  <div class="header-row">
-    <div>
-      <div class="app-title">速記</div>
-      <div class="app-sub">Quick Todo</div>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-row">
+      <div>
+        <div class="app-title">速記</div>
+        <div class="app-sub">Quick Todo</div>
+      </div>
+      <div class="date-badge" id="dateBadge">3月8日</div>
     </div>
-    <div class="date-badge" id="dateBadge"></div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab(&#39;todo&#39;,this)">待辦</button>
+      <button class="tab" onclick="switchTab(&#39;done&#39;,this)">已完成</button>
+    </div>
   </div>
-</div>
 
-<div class="tabs">
-  <button class="tab active" onclick="switchTab('todo',this)">待辦</button>
-  <button class="tab" onclick="switchTab('done',this)">已完成</button>
-</div>
+  <!-- SCROLL AREA -->
+  <div class="scroll-area">
+    <div class="content panel active" id="todoPanel">
+      <div class="section-label" id="todoCount">0 項待辦</div>
+      <div id="todoList"><div class="empty"><div class="empty-icon">🌿</div><div class="empty-text">沒有待辦事項<br>點下方輸入框或麥克風新增</div></div></div>
+    </div>
+    <div class="content panel" id="donePanel">
+      <div class="section-label" id="doneCount">0 項已完成</div>
+      <div id="doneList"><div class="empty"><div class="empty-icon">☁️</div><div class="empty-text">完成的事項將在這裡顯示</div></div></div>
+    </div>
+  </div>
 
-<div class="content panel active" id="todoPanel">
-  <div class="section-label" id="todoCount"></div>
-  <div id="todoList"></div>
-</div>
+  <!-- INPUT AREA -->
+  <div class="input-area">
+    <div class="listening-bar" id="listeningBar">
+      <div class="wave"><span></span><span></span><span></span><span></span><span></span></div>
+      <span id="listeningText">聆聽中…</span>
+    </div>
+    <div class="input-row">
+      <textarea class="text-input" id="todoInput" placeholder="新增待辦事項…" rows="1"></textarea>
+      <button class="icon-btn mic-btn" id="micBtn" onclick="toggleVoice()" title="語音輸入">🎤</button>
+      <button class="icon-btn add-btn" onclick="addTodo()" title="新增">＋</button>
+    </div>
+  </div>
 
-<div class="content panel" id="donePanel">
-  <div class="section-label" id="doneCount"></div>
-  <div id="doneList"></div>
-</div>
+</div><!-- #app -->
 
-<div class="input-area">
-  <div class="listening-bar" id="listeningBar">
-    <div class="wave"><span></span><span></span><span></span><span></span><span></span></div>
-    <span id="listeningText">聆聽中…</span>
-  </d
+<div class="toast" id="toast"></div>
+
+<script>
+let todos = JSON.parse(localStorage.getItem('todos') || '[]');
+let dones = JSON.parse(localStorage.getItem('dones') || '[]');
+let currentTab = 'todo';
+
+function save() {
+  localStorage.setItem('todos', JSON.stringify(todos));
+  localStorage.setItem('dones', JSON.stringify(dones));
+}
+
+function formatDate(d = new Date()) {
+  return `${d.getMonth()+1}月${d.getDate()}日`;
+}
+function formatTime(ts) {
+  const d = new Date(ts);
+  return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+}
+document.getElementById('dateBadge').textContent = formatDate();
+
+function render() {
+  const tl = document.getElementById('todoList');
+  const tc = document.getElementById('todoCount');
+  tc.textContent = `${todos.length} 項待辦`;
+  tl.innerHTML = todos.length === 0
+    ? `<div class="empty"><div class="empty-icon">🌿</div><div class="empty-text">沒有待辦事項<br>點下方輸入框或麥克風新增</div></div>`
+    : todos.map(t => `
+      <div class="todo-item" id="item-${t.id}">
+        <label class="check-wrap">
+          <input type="checkbox" onchange="completeTodo('${t.id}',this)">
+          <div class="checkmark">
+            <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
+              <path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </label>
+        <div style="flex:1">
+          <div class="todo-text">${escHtml(t.text)}</div>
+          <div class="todo-time">${formatTime(t.ts)}</div>
+        </div>
+        <button class="del-btn" onclick="deleteTodo('${t.id}')" title="刪除">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>`).join('');
+
+  const dl = document.getElementById('doneList');
+  const dc = document.getElementById('doneCount');
+  dc.textContent = `${dones.length} 項已完成`;
+  dl.innerHTML = dones.length === 0
+    ? `<div class="empty"><div class="empty-icon">☁️</div><div class="empty-text">完成的事項將在這裡顯示</div></div>`
+    : dones.slice().reverse().map(d => `
+      <div class="done-item">
+        <div class="done-check">
+          <svg width="11" height="8" viewBox="0 0 12 9" fill="none">
+            <path d="M1 4L4.5 7.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div style="flex:1">
+          <div class="done-text">${escHtml(d.text)}</div>
+          <div class="done-time">完成於 ${formatTime(d.ts)}</div>
+        </div>
+      </div>`).join('') + `<button class="clear-btn" onclick="clearDone()">清除全部已完成</button>`;
+}
+render();
+
+function addTodo(text) {
+  const inp = document.getElementById('todoInput');
+  const val = (text || inp.value).trim();
+  if (!val) { showToast('請輸入待辦事項'); return; }
+  todos.push({ id: Date.now() + Math.random(), text: val, ts: Date.now() });
+  save(); render();
+  inp.value = ''; inp.style.height = '46px';
+  if (currentTab !== 'todo') switchTab('todo', document.querySelector('.tab'));
+}
+
+function completeTodo(id, el) {
+  const idx = todos.findIndex(t => String(t.id) === String(id));
+  if (idx === -1) return;
+  const item = document.getElementById('item-' + id);
+  el.disabled = true;
+  item.classList.add('completing');
+  setTimeout(() => {
+    const t = todos.splice(idx, 1)[0];
+    t.ts = Date.now(); dones.push(t);
+    save(); render(); showToast('✓ 已完成！');
+  }, 340);
+}
+
+function deleteTodo(id) {
+  todos = todos.filter(t => String(t.id) !== String(id));
+  save(); render();
+}
+
+function clearDone() {
+  dones = []; save(); render(); showToast('已清除');
+}
+
+function switchTab(name, btn) {
+  currentTab = name;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('todoPanel').classList.toggle('active', name === 'todo');
+  document.getElementById('donePanel').classList.toggle('active', name === 'done');
+}
+
+let recognition = null, isListening = false;
+function toggleVoice() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    showToast('此裝置不支援語音輸入'); return;
+  }
+  if (isListening) { recognition && recognition.stop(); return; }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'zh-TW';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.onstart = () => {
+    isListening = true;
+    document.getElementById('micBtn').classList.add('listening');
+    document.getElementById('listeningBar').classList.add('show');
+  };
+  recognition.onresult = (e) => {
+    let interim = '', final = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) final += e.results[i][0].transcript;
+      else interim += e.results[i][0].transcript;
+    }
+    document.getElementById('todoInput').value = final || interim;
+    document.getElementById('listeningText').textContent = interim ? `「${interim}」` : '聆聽中…';
+    if (final) recognition.stop();
+  };
+  recognition.onerror = () => stopListening();
+  recognition.onend   = () => stopListening();
+  recognition.start();
+}
+function stopListening() {
+  isListening = false;
+  document.getElementById('micBtn').classList.remove('listening');
+  document.getElementById('listeningBar').classList.remove('show');
+  document.getElementById('listeningText').textContent = '聆聽中…';
+}
+
+const inp = document.getElementById('todoInput');
+inp.addEventListener('input', () => {
+  inp.style.height = '46px';
+  inp.style.height = Math.min(inp.scrollHeight, 120) + 'px';
+});
+inp.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addTodo(); }
+});
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// PWA Manifest
+const manifest = {
+  name: '速記 · 待辦', short_name: '速記',
+  start_url: '.', display: 'standalone',
+  background_color: '#F5F0E8', theme_color: '#C4A882',
+  icons: [{ src: `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' rx='22' fill='%23C4A882'/><text y='65' x='16' font-size='52' font-family='serif'>記</text></svg>`, sizes: '96x96', type: 'image/svg+xml' }]
+};
+const mBlob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+const mLink = document.createElement('link');
+mLink.rel = 'manifest'; mLink.href = URL.createObjectURL(mBlob);
+document.head.appendChild(mLink);
+</script>
+
+
+</body></html>
